@@ -4,7 +4,7 @@ import summer from 'svg@/summer.svg'
 import spring from 'svg@/spring.svg'
 import winter from 'svg@/winter.svg'
 import fall from 'svg@/fall.svg'
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import fetchSeason from "./libs/fetchSeason";
 import Cover from "./components/cover/cover";
 import { ParentComponentGenre } from "./components/genre/genre";
@@ -14,9 +14,28 @@ import SeasonIcon from "./components/seasonIcon/seasonIcon";
 export default function Home() {
   const [result, setResult] = useState<Array<any> | null>(null)
   const [error, setError] = useState<string | null>(null)
-  const [season, setSeason] = useState<string>('summer')
+  const [season, setSeason] = useState<string>('fall')
   const [width, setWidth] = useState<number>(0)
+  const [page, setPage] = useState<number>(1)
+  const nextPage = useRef<boolean>(true);
+
   const objectSeason = { Winter: winter, Spring: spring, Summer: summer, Fall: fall }
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const documentHeight = document.documentElement.scrollHeight
+      const heightWindow = window.innerHeight;
+      const scrollPosition = window.scrollY;
+      if((heightWindow + scrollPosition >= documentHeight - 1) && nextPage.current){
+        setPage(prev => prev + 1)
+      }
+    }
+    window.addEventListener('scroll', handleScroll)
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, []);
+  
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -29,20 +48,26 @@ export default function Home() {
     return () => {
       window.removeEventListener("resize", handleResizer);
     };
-  }, []);    
+  }, []); 
+
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
-      const seasonData = await fetchSeason(season);
+      const seasonData = await fetchSeason(season,page);
       if(seasonData.error || seasonData.data == null){
         console.error(seasonData.error)
         setError(seasonData.error)
         return 
       }
+      nextPage.current = seasonData.next;
+      if(result){
+        setResult(prev => [...prev, ...seasonData.data])
+        return
+      }
       setResult(seasonData.data)  
     };
     fetchData();
 
-  }, [season]);
+  }, [season,page]);
 
     if(error){
       return(
