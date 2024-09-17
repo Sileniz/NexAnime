@@ -22,7 +22,7 @@ export function ParentComponentGenre({value}: any) {
           <p className={styles.labelInfo}>Themes:</p>
           <div className={styles.tagsContainer}>
             {value.themes.map((genre: any, genreKey: number) => (
-              <Genre genre={genre.name} key={genrekey}/>
+              <Genre genre={genre.name} key={genreKey}/>
             ))}
           </div>
         </div>
