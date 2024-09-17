@@ -52,7 +52,7 @@ export default function Home() {
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       const seasonData = await fetchSeason(season, page);
-      if (seasonData.error || seasonData.data.length > 0) {
+      if (seasonData.error || seasonData.data.length == 0) {
         console.error(seasonData.error);
         setError(seasonData.error);
         return;
