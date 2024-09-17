@@ -84,7 +84,7 @@ export default function Home() {
         </div>
         <div className={styles.Data}>
         {result?.map((value, key) => (
-          <div className={styles.containerAll}>
+          <div className={styles.containerAll} key={key}>
             {width <= 1040 && (
                 <AddionalInfo aired={value.aired.string} episodes={value.episodes} synopsis={null} />
               )}
