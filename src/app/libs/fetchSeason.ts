@@ -1,6 +1,6 @@
 interface fetchSeason{
     error: string | null
-    data: Array<any> | null
+    data: any[]
     pages: number | null
     next: boolean
 }
@@ -30,8 +30,8 @@ export default async function fetchSeason(season: string, page: number): Promise
             next: false }
     }catch(e){
         if(e instanceof Error){
-            return { error: e.message, data: null, pages: null, next: false }
+            return { error: e.message, data: [], pages: null, next: false }
         }
-        return { error: "Erro desconhecido", data: null, pages: null, next: false }
+        return { error: "Erro desconhecido", data: [], pages: null, next: false }
     }
 }

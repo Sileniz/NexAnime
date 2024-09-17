@@ -1,4 +1,4 @@
-  "use client";
+"use client";
 import styles from "./page.module.css";
 import summer from 'svg@/summer.svg'
 import spring from 'svg@/spring.svg'
@@ -12,30 +12,29 @@ import AddionalInfo from "./components/addionalInfo/addionalInfo";
 import SeasonIcon from "./components/seasonIcon/seasonIcon";
 
 export default function Home() {
-  const [result, setResult] = useState<Array<any> | null>(null)
-  const [error, setError] = useState<string | null>(null)
-  const [season, setSeason] = useState<string>('fall')
-  const [width, setWidth] = useState<number>(0)
-  const [page, setPage] = useState<number>(1)
+  const [result, setResult] = useState<any[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [season, setSeason] = useState<string>('fall');
+  const [width, setWidth] = useState<number>(0);
+  const [page, setPage] = useState<number>(1);
   const nextPage = useRef<boolean>(true);
 
-  const objectSeason = { Winter: winter, Spring: spring, Summer: summer, Fall: fall }
+  const objectSeason = { Winter: winter, Spring: spring, Summer: summer, Fall: fall };
 
   useEffect(() => {
     const handleScroll = () => {
-      const documentHeight = document.documentElement.scrollHeight
+      const documentHeight = document.documentElement.scrollHeight;
       const heightWindow = window.innerHeight;
       const scrollPosition = window.scrollY;
-      if((heightWindow + scrollPosition >= documentHeight - 1) && nextPage.current){
-        setPage(prev => prev + 1)
+      if ((heightWindow + scrollPosition >= documentHeight - 1) && nextPage.current) {
+        setPage(prev => prev + 1);
       }
-    }
-    window.addEventListener('scroll', handleScroll)
+    };
+    window.addEventListener('scroll', handleScroll);
     return () => {
-      window.removeEventListener('scroll', handleScroll)
-    }
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
-  
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -48,59 +47,56 @@ export default function Home() {
     return () => {
       window.removeEventListener("resize", handleResizer);
     };
-  }, []); 
+  }, []);
 
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
-      const seasonData = await fetchSeason(season,page);
-      if(seasonData.error || seasonData.data == null){
-        console.error(seasonData.error)
-        setError(seasonData.error)
-        return 
+      const seasonData = await fetchSeason(season, page);
+      if (seasonData.error || seasonData.data.length > 0) {
+        console.error(seasonData.error);
+        setError(seasonData.error);
+        return;
       }
       nextPage.current = seasonData.next;
-      if(result){
-        setResult(prev => [...prev, ...seasonData.data])
-        return
-      }
-      setResult(seasonData.data)  
+      setResult(prev => [...prev, ...seasonData.data]);
     };
     fetchData();
+  }, [season, page]);
 
-  }, [  season, page]);
-
-    if(error){
-      return(
+  if (error) {
+    return (
       <main className={styles.main}>
         <h1 className={styles.error}>{error}</h1>
       </main>
-      )
-    }
-    if(result){
-      return (<main className={styles.main}>
-        <div className={styles.containerSeason}>
-          {Object.entries(objectSeason).map(([key, value], index) => (
-          <SeasonIcon id={key} season={key} image={value} onClick={(e: any) => setSeason(e.target.textContent)} key={index}/>))}
-        </div>
-        <div className={styles.Data}>
-        {result?.map((value, key) => (
+    );
+  }
+
+  return (
+    <main className={styles.main}>
+      <div className={styles.containerSeason}>
+        {Object.entries(objectSeason).map(([key, value], index) => (
+          <SeasonIcon id={key} season={key} image={value} onClick={(e: any) => setSeason(e.target.textContent)} key={index} />
+        ))}
+      </div>
+      <div className={styles.Data}>
+        {result.map((value, key) => (
           <div className={styles.containerAll} key={key}>
             {width <= 1040 && (
-                <AddionalInfo aired={value.aired.string} episodes={value.episodes} synopsis={null} />
-              )}
+              <AddionalInfo aired={value.aired.string} episodes={value.episodes} synopsis={null} />
+            )}
             <div className={styles.containerAnime}>
-              <Cover cover={value.images.jpg.large_image_url} title={value.title} key={key} />
-              <div className={styles.infoAnime} key={key}>
-              {width >= 1040 ?
-                <AddionalInfo aired={value.aired.string} episodes={value.episodes} synopsis={value.synopsis}/> :
-                <AddionalInfo aired={null} episodes={null} synopsis={value.synopsis}/>
-              }
-              <ParentComponentGenre value={value}/>
-            </div>
+              <Cover cover={value.images.jpg.large_image_url} title={value.title} />
+              <div className={styles.infoAnime}>
+                {width >= 1040 ?
+                  <AddionalInfo aired={value.aired.string} episodes={value.episodes} synopsis={value.synopsis} /> :
+                  <AddionalInfo aired={null} episodes={null} synopsis={value.synopsis} />
+                }
+                <ParentComponentGenre value={value} />
+              </div>
             </div>
           </div>
         ))}
-        </div>
-      </main>)
-    }
+      </div>
+    </main>
+  );
 }
