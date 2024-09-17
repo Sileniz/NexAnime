@@ -1,0 +1,38 @@
+.containerGenre {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #161616;
+    width: fit-content;
+    padding-inline: 10px;
+    padding-block: 5px;
+    border-radius: 5px;
+}
+.genre {
+    width: max-content;
+    font-weight: 500;
+    font-size: 14px;
+}
+.tagsContainer {
+    overflow: scroll;
+    display: flex;
+    gap: 5px
+}
+.labelInfo {
+    font-weight: 500;
+    margin-block: 3px;
+}
+.containerInfo {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    flex-grow: 1;
+}
+@media (max-width: 514px){
+    .labelInfo {
+        font-size: 13px;
+    }
+    .genre {
+        font-size: 12px;
+    }
+}

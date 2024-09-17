@@ -1,0 +1,26 @@
+.containerSeason{
+    display: flex;
+    justify-content: center;
+    background-color: white;
+    min-width: 70px;
+    max-width: 100px;
+    padding: 10px;
+    border-radius: 5px;
+    align-items: center;
+}
+.season{
+    color: black;
+}
+@media (max-width: 544px){
+    .containerSeason{
+        padding: 10px 5px;
+    }
+}
+@media (max-width: 407px){
+    .containerSeason{
+        padding: 10px 0px;
+    }
+    .season{
+        display: none;
+    }
+}

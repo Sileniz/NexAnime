@@ -1,0 +1,31 @@
+.FooterItem{
+    font-size: 16px;
+    padding: 16px 0px;
+    display: flex;
+    color: white;
+    background-color: #080808;
+    align-items: center;
+    flex-direction: column;
+    gap: 5px;
+}
+.FooterSite{
+    font-size: 0.8em;
+}
+.footerCredits{
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+.footerCredits a {
+    transition: 0.7s;
+    color: white;
+}
+.footerCredits a:hover {
+    color: red;
+}
+
+@media (min-width: 600px) and (max-width: 1024px) {
+    .FooterItem{
+        font-size: 22px;
+    }
+}
