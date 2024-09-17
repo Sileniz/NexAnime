@@ -16,13 +16,13 @@ export function ParentComponentGenre({value}: any) {
             <p className={styles.labelInfo}>Genres:</p>
             <div className={styles.tagsContainer}>
             {value.genres.map((genre: any, genreKey: number) => (
-              <Genre genre={genre.name}/>
+              <Genre genre={genre.name} key={genreKey}/>
             ))}
           </div>
           <p className={styles.labelInfo}>Themes:</p>
           <div className={styles.tagsContainer}>
             {value.themes.map((genre: any, genreKey: number) => (
-              <Genre genre={genre.name}/>
+              <Genre genre={genre.name} key={genrekey}/>
             ))}
           </div>
         </div>

@@ -67,7 +67,7 @@ export default function Home() {
     };
     fetchData();
 
-  }, [season,page]);
+  }, [  season, page]);
 
     if(error){
       return(
