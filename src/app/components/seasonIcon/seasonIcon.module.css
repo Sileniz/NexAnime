@@ -7,9 +7,21 @@
     padding: 10px;
     border-radius: 5px;
     align-items: center;
-}
-.season{
     color: black;
+}
+.selectedImage{
+    filter: invert();
+}
+.selected{
+    color: white;
+    display: flex;
+    justify-content: center;
+    background-color: rgb(255, 0, 55);
+    min-width: 70px;
+    max-width: 100px;
+    padding: 10px;
+    border-radius: 5px;
+    align-items: center;
 }
 @media (max-width: 544px){
     .containerSeason{

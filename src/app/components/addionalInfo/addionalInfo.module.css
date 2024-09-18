@@ -21,6 +21,12 @@
     padding: 1.2px;
     border-radius: 500px;
 }
+.container{
+    display: flex;
+    flex-direction: column;
+    max-width: 320px;
+    flex-grow: 1;
+}
 @media (max-width: 1192px) {
     .info{
         font-size: 13px;

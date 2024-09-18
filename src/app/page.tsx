@@ -14,11 +14,12 @@ import SeasonIcon from "./components/seasonIcon/seasonIcon";
 export default function Home() {
   const [result, setResult] = useState<any[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [season, setSeason] = useState<string>('fall');
+  const [season, setSeason] = useState<string>('Fall');
   const [width, setWidth] = useState<number>(0);
   const [page, setPage] = useState<number>(1);
+  const loadinPage = useRef<boolean>(false)
   const nextPage = useRef<boolean>(true);
-
+  const prevSeason = useRef<string>('Fall')
   const objectSeason = { Winter: winter, Spring: spring, Summer: summer, Fall: fall };
 
   useEffect(() => {
@@ -26,8 +27,9 @@ export default function Home() {
       const documentHeight = document.documentElement.scrollHeight;
       const heightWindow = window.innerHeight;
       const scrollPosition = window.scrollY;
-      if ((heightWindow + scrollPosition >= documentHeight - 1) && nextPage.current) {
+      if ((heightWindow + scrollPosition >= documentHeight - 1) && nextPage.current && !loadinPage.current) {
         setPage(prev => prev + 1);
+        loadinPage.current = true
       }
     };
     window.addEventListener('scroll', handleScroll);
@@ -51,6 +53,7 @@ export default function Home() {
 
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
+      loadinPage.current = false
       const seasonData = await fetchSeason(season, page);
       if (seasonData.error || seasonData.data.length == 0) {
         console.error(seasonData.error);
@@ -58,6 +61,11 @@ export default function Home() {
         return;
       }
       nextPage.current = seasonData.next;
+      if(season !== prevSeason.current){
+        setResult(seasonData.data)
+        prevSeason.current = season
+        return
+      }
       setResult(prev => [...prev, ...seasonData.data]);
     };
     fetchData();
@@ -75,7 +83,15 @@ export default function Home() {
     <main className={styles.main}>
       <div className={styles.containerSeason}>
         {Object.entries(objectSeason).map(([key, value], index) => (
-          <SeasonIcon id={key} season={key} image={value} onClick={(e: any) => setSeason(e.target.textContent)} key={index} />
+          <SeasonIcon 
+          id={key} 
+          season={key} 
+          image={value} 
+          onClick={() => {
+          setSeason(key), setPage(1)}} 
+          key={index} 
+          isSelected={season}
+          />
         ))}
       </div>
       <div className={styles.Data}>
