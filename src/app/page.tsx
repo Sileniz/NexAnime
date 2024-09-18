@@ -17,6 +17,7 @@ export default function Home() {
   const [season, setSeason] = useState<string>('Fall');
   const [width, setWidth] = useState<number>(0);
   const [page, setPage] = useState<number>(1);
+  const refPages = useRef<number | null>(1)
   const loadinPage = useRef<boolean>(false)
   const nextPage = useRef<boolean>(true);
   const prevSeason = useRef<string>('Fall')
@@ -66,6 +67,7 @@ export default function Home() {
         prevSeason.current = season
         return
       }
+      refPages.current = seasonData.pages
       setResult(prev => [...prev, ...seasonData.data]);
     };
     fetchData();
@@ -113,6 +115,7 @@ export default function Home() {
           </div>
         ))}
       </div>
+      <p className={styles.pagination}>{`Page ${page} of ${refPages.current}`}</p>
     </main>
   );
 }
