@@ -61,12 +61,13 @@ export default function Home() {
         setError(seasonData.error);
         return;
       }
-      nextPage.current = seasonData.next;
       if(season !== prevSeason.current){
         setResult(seasonData.data)
         prevSeason.current = season
+        refPages.current = seasonData.pages
         return
       }
+      nextPage.current = seasonData.next;
       refPages.current = seasonData.pages
       setResult(prev => [...prev, ...seasonData.data]);
     };

@@ -19,7 +19,7 @@
 .pagination{
   font-size: 23px;
   color: white;
-  padding: 10px;
+  padding-block: 20px 0px;
 }
 .containerAll{
   display: flex;
