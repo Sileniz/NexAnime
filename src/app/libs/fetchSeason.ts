@@ -7,7 +7,7 @@ interface fetchSeason{
 
 export default async function fetchSeason(season: string, page: number): Promise<fetchSeason>{
     try{
-        const fetchData = await fetch(`https://api.jikan.moe/v4/seasons/2024/${season}?page=${page}&sfw=true`)
+        const fetchData = await fetch(`https://api.jikan.moe/v4/seasons/2025/${season}?page=${page}&sfw=true`)
         if(!fetchData.ok){
             console.error("Houve um erro durante a requisição")
             throw new Error("Houve um erro durante a requisição")
